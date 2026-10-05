@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATEMÁTICA - Relaciones, Funciones Reales, Dominio e Imagen (UCCuyo)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- KaTeX for ultra-fast LaTeX formulas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <!-- Google Fonts: Outfit & JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f7f9f6;
+        }
+        /* Paleta Institucional Verde Oliva UCCuyo */
+        .text-accent { color: #436600; }
+        .bg-accent { background-color: #436600; }
+        .bg-accent-hover:hover { background-color: #324d00; }
+        .bg-accent-light { background-color: #f1f6eb; }
+        .border-accent { border-color: #436600; }
+
+        .text-primary { color: #436600; }
+        .bg-primary { background-color: #436600; }
+        .bg-primary-dark { background-color: #324d00; }
+        .border-primary { border-color: #436600; }
+        
+        .focus-accent:focus {
+            border-color: #436600;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 102, 0, 0.2);
+        }
+
+        .code-font {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .custom-scroll::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        
+        canvas {
+            touch-action: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between text-slate-800">
+
+    <!-- Cabecera Institucional UCCuyo -->
+    <header class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-accent flex items-center justify-center text-white font-bold text-xl shadow-md">
+                    M
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-gray-800 tracking-wide uppercase">MATEMÁTICA</h1>
+                    <p class="text-xs text-gray-500 font-semibold">PreMédico (Facultad de Cs. Médicas - UCCuyo)</p>
+                </div>
+            </div>
+            <!-- Botón Guía de Uso -->
+            <button onclick="openTutorial()" class="flex items-center gap-1.5 px-3 py-1.5 bg-accent text-white text-xs font-semibold rounded-lg shadow-sm hover:opacity-90 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                Guía de Uso
+            </button>
+        </div>
+    </header>
+
+    <!-- Contenido Principal con Menú Lateral -->
+    <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 flex flex-col lg:flex-row gap-6">
+        
+        <!-- Menú de Navegación Lateral -->
+        <nav class="w-full lg:w-64 flex flex-row lg:flex-col gap-2 bg-white p-3 rounded-2xl shadow-sm border border-gray-100 overflow-x-auto lg:overflow-x-visible whitespace-nowrap lg:whitespace-normal sticky top-20 h-fit">
+            <button onclick="switchTab(1)" id="btn-tab-1" class="bg-accent text-white flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-semibold transition">
+                1. Pares y Producto Cartesiano
+            </button>
+            <button onclick="switchTab(2)" id="btn-tab-2" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition">
+                2. Concepto de Función y Unicidad
+            </button>
+            <button onclick="switchTab(3)" id="btn-tab-3" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition">
+                3. Dominio, Imagen y Evaluación
+            </button>
+            <button onclick="switchTab(4)" id="btn-tab-4" class="text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition">
+                4. Formas de Expresión
+            </button>
+        </nav>
+
+        <!-- Contenedores de Sección -->
+        <div class="flex-1 overflow-hidden space-y-6">
+            
+            <!-- ==================== MÓDULO 1: PARES ORDENADOS Y PRODUCTO CARTESIANO ==================== -->
+            <section id="module-1" class="module-content block space-y-6">
+                <!-- Header Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h2 class="text-xl font-bold text-gray-800 mb-1">Fundamentos de Relaciones y Producto Cartesiano</h2>
+                    <p class="text-xs text-gray-500">
+                        En matemática aplicada y ciencias biológicas, una relación vincula elementos de un conjunto con otro. Analizamos la noción rigurosa de par ordenado \((a, b)\), la propiedad de no conmutatividad y la construcción geométrica del producto cartesiano \(A \times B\).
+                    </p>
+                    <div class="bg-accent-light border border-accent/20 p-3 rounded-xl text-center my-3">
+                        <div class="text-accent font-semibold text-xs uppercase tracking-wide mb-1">Principio de No Conmutatividad del Par Ordenado</div>
+                        <div class="text-base text-gray-900 font-medium">$$(a, b) = (c, d) \iff a = c \ \land \ b = d \quad \implies \quad (a, b) \neq (b, a) \quad \forall a \neq b$$</div>
+                    </div>
+                </div>
+
+                <!-- Paneles Módulo 1 -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Controles y No Conmutatividad -->
+                    <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-gray-800 mb-3 uppercase tracking-wider">Explorador de Pares Ordenados</h3>
+                            <p class="text-xs text-gray-500 mb-4">
+                                Ajuste los valores enteros de las componentes para constatar cómo cambia la posición en el plano cartesiano y su significado ordinal:
+                            </p>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between text-xs font-semibold text-gray-700 mb-1">
+                                        <span>Primera componente \(a\) (Abscisa):</span>
+                                        <span class="text-accent code-font"><span id="val-a">2</span></span>
+                                    </div>
+                                    <input type="range" id="slider-a" min="-5" max="5" value="2" step="1" class="w-full accent-[#436600]" oninput="updateMod1()">
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs font-semibold text-gray-700 mb-1">
+                                        <span>Segunda componente \(b\) (Ordenada):</span>
+                                        <span class="text-accent code-font"><span id="val-b">4</span></span>
+                                    </div>
+                                    <input type="range" id="slider-b" min="-5" max="5" value="4" step="1" class="w-full accent-[#436600]" oninput="updateMod1()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Comparativa de Pares -->
+                        <div class="mt-6 pt-4 border-t border-gray-100 bg-gray-50 p-4 rounded-xl border border-gray-100 space-y-2 text-center">
+                            <div class="text-xs text-gray-700">
+                                Par original: <strong class="text-accent code-font">(a, b) = (<span id="txt-a">2</span>, <span id="txt-b">4</span>)</strong>
+                            </div>
+                            <div class="text-xs text-gray-700">
+                                Par invertido: <strong class="text-gray-600 code-font">(b, a) = (<span id="txt-b-inv">4</span>, <span id="txt-a-inv">2</span>)</strong>
+                            </div>
+                            <div id="conmutativo-status" class="text-xs font-bold text-amber-600 pt-1">
+                                \((2, 4) \neq (4, 2)\) (No conmutativo)
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Producto Cartesiano -->
+                    <div class="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Representación en el Plano Cartesiano</h3>
+                            <span class="text-[11px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-mono">Puntos Discretos \(A \times B\)</span>
+                        </div>
+                        <div class="relative flex-grow bg-slate-900 rounded-xl overflow-hidden min-h-[280px] shadow-inner flex items-center justify-center">
+                            <canvas id="canvas-mod1" width="360" height="280" class="w-full h-full"></canvas>
+                        </div>
+                        <p class="text-[11px] text-gray-500 mt-3 text-center">
+                            Conjunto \(A = \{-2, -1, 1, 2\}\), \(B = \{-2, 0, 2\}\). Los puntos grises denotan los elementos del producto cartesiano \(A \times B\).
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== MÓDULO 2: DEFINICIÓN DE FUNCIÓN Y CRITERIOS DE EXISTENCIA Y UNICIDAD ==================== -->
+            <section id="module-2" class="module-content hidden space-y-6">
+                <!-- Header Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h2 class="text-xl font-bold text-gray-800 mb-1">Definición de Función y Criterios de Existencia y Unicidad</h2>
+                    <p class="text-xs text-gray-500">
+                        Una función \(f: A \to B\) es una relación particular entre dos subconjuntos de \(\mathbb{R}\) donde cada elemento del dominio posee una y solo una imagen en el codominio.
+                    </p>
+                    <div class="bg-accent-light border border-accent/20 p-3 rounded-xl text-center my-3">
+                        <div class="text-accent font-semibold text-xs uppercase tracking-wide mb-1">Condición de Función en el Plano Real</div>
+                        <div class="text-base text-gray-900 font-medium">$$\forall x \in \text{Dom}(f), \ \exists \, y \in \text{Im}(f) \quad \text{tal que} \quad y = f(x)$$</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Prueba Línea Vertical -->
+                    <div class="lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                        <div>
+                            <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
+                                <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Prueba de la Línea Vertical</h3>
+                                <select id="select-curve-type" onchange="changeCurveType()" class="bg-gray-50 text-xs text-gray-700 border border-gray-200 rounded-lg px-2.5 py-1.5 focus-accent">
+                                    <option value="function">Función Válida: f(x) = 0.3x² - 2</option>
+                                    <option value="not-function">Relación No Función: Circunferencia x² + y² = 9</option>
+                                </select>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-3">
+                                Desplace la recta vertical a través del eje de abscisas. Si la recta corta al gráfico en más de un punto para algún valor de \(x\), se viola la condición de <strong>unicidad</strong>.
+                            </p>
+                            <div class="relative bg-slate-900 rounded-xl overflow-hidden h-[240px] shadow-inner mb-3 flex items-center justify-center">
+                                <canvas id="canvas-mod2" width="360" height="240" class="w-full h-full cursor-crosshair"></canvas>
+                            </div>
+                            <div class="space-y-1">
+                                <div class="flex justify-between text-xs font-semibold text-gray-700">
+                                    <span>Posición de la Recta Vertical (\(x\)):</span>
+                                    <span class="text-accent code-font"><span id="val-vline">1.0</span></span>
+                                </div>
+                                <input type="range" id="slider-vline" min="-3" max="3" value="1" step="0.1" class="w-full accent-[#436600]" oninput="updateMod2FromSlider()">
+                            </div>
+                        </div>
+
+                        <div id="vline-status" class="mt-4 text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-200 text-center">
+                            Prueba Vertical: Cortes con la curva = 1 (¡Cumple Existencia y Unicidad!)
+                        </div>
+                    </div>
+
+                    <!-- Nomenclatura y Variables en Ciencias Médicas -->
+                    <div class="lg:col-span-6 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider mb-2">Nomenclatura y Variables en Medicina</h3>
+                            <p class="text-xs text-gray-500 mb-4">
+                                En la fisiología y la clínica médica, cada variable adopta un rol empírico estricto que determina el orden de representación:
+                            </p>
+                            <div class="space-y-3">
+                                <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-accent"></span>
+                                        <span class="text-xs font-bold text-gray-800"><span class="uppercase">Variable Independiente</span> (\(x\))</span>
+                                    </div>
+                                    <p class="text-xs text-gray-600 leading-relaxed">
+                                        Representada en el <strong>eje horizontal (abscisas)</strong>. Constituye la causa, insumo o parámetro controlado: tiempo transcurrido (h), dosis de fármaco administrada (mg/kg), temperatura (°C).
+                                    </p>
+                                </div>
+                                <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                                        <span class="text-xs font-bold text-gray-800"><span class="uppercase">Variable Dependiente</span> (\(y = f(x)\))</span>
+                                    </div>
+                                    <p class="text-xs text-gray-600 leading-relaxed">
+                                        Representada en el <strong>eje vertical (ordenadas)</strong>. Constituye el efecto o magnitud biológica observada: concentración plasmática (\(\mu\text{g/mL}\)), presión arterial (\(\text{mmHg}\)), frecuencia cardíaca.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-accent-light border border-accent/20 p-3.5 rounded-xl mt-4 text-xs text-gray-800">
+                            <strong class="text-accent">Principio Clave UCCuyo:</strong> La escritura \(y = f(x)\) explicita que el valor numérico de la ordenada \(y\) depende funcionalmente y de manera única del valor asignado a la abscisa \(x\).
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== MÓDULO 3: DOMINIO, IMAGEN Y EVALUACIÓN ==================== -->
+            <section id="module-3" class="module-content hidden space-y-6">
+                <!-- Header Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h2 class="text-xl font-bold text-gray-800 mb-1">Dominio e Imagen (Cálculo Analítico y Gráfico)</h2>
+                    <p class="text-xs text-gray-500">
+                        Determinación rigurosa del <strong>Dominio</strong> (\(\text{Dom}(f)\)) analizando restricciones algebraicas en \(\mathbb{R}\), y de la <strong>Imagen</strong> (\(\text{Im}(f)\)) mediante proyección ortogonal sobre el eje \(y\).
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Selector de Modelo y Restricciones -->
+                    <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider mb-2">Restricciones Analíticas</h3>
+                            <label class="block text-xs text-gray-600 font-semibold mb-1">Seleccione la familia funcional:</label>
+                            <select id="select-func-mod3" onchange="updateMod3Model()" class="w-full bg-gray-50 text-xs text-gray-800 border border-gray-200 rounded-xl p-2.5 mb-3 focus-accent font-medium">
+                                <option value="poly">Polinómica: f(x) = x² - 4</option>
+                                <option value="rational">Racional: f(x) = 1 / (x - 2)</option>
+                                <option value="radical">Irracional (Índice par): f(x) = √(x - 1)</option>
+                                <option value="log">Logarítmica: f(x) = ln(x + 2)</option>
+                            </select>
+
+                            <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-200 space-y-1 mb-4">
+                                <span class="text-xs font-bold text-accent uppercase tracking-wider block">Condición Algebraica:</span>
+                                <div id="mod3-analytic-text" class="text-xs text-gray-700 leading-relaxed">
+                                    Para \(f(x) = x^2 - 4\), al ser un polinomio, no existen restricciones. \(\text{Dom}(f) = \mathbb{R}\).
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Evaluación Funcional x0 -->
+                        <div class="bg-accent-light p-3.5 rounded-xl border border-accent/20">
+                            <div class="flex justify-between items-center text-xs font-semibold text-gray-700 mb-1">
+                                <span>Evaluación de Abscisa \(x_0\):</span>
+                                <span class="text-accent code-font"><span id="val-x0-num">1.0</span></span>
+                            </div>
+                            <input type="range" id="slider-x0" min="-4" max="4" value="1" step="0.2" class="w-full accent-[#436600] mb-2" oninput="updateMod3Eval()">
+                            <div class="text-xs text-gray-800 font-medium text-center">
+                                Imagen calculada: \(f(x_0) = \) <span id="val-fx0-result" class="font-bold text-accent code-font">-3.000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Dominio e Imagen -->
+                    <div class="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                        <div class="flex flex-wrap justify-between items-center gap-2 mb-2">
+                            <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Proyecciones Geométricas en Ejes</h3>
+                            <div class="text-xs font-mono">
+                                <span class="text-blue-600 font-bold">Dom(f):</span> <span id="badge-dom" class="text-gray-800 font-bold">\( (-\infty, +\infty) \)</span> | 
+                                <span class="text-emerald-600 font-bold">Im(f):</span> <span id="badge-img" class="text-gray-800 font-bold">\( [-4, +\infty) \)</span>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-2">
+                            La curva se proyecta sobre el eje \(x\) para el <strong>Dominio</strong> y sobre el eje \(y\) para la <strong>Imagen</strong>.
+                        </p>
+                        <div class="relative flex-grow bg-slate-900 rounded-xl overflow-hidden min-h-[270px] shadow-inner flex items-center justify-center">
+                            <canvas id="canvas-mod3" width="460" height="270" class="w-full h-full cursor-crosshair"></canvas>
+                        </div>
+                        <div class="mt-2 text-[11px] text-gray-500 text-center">
+                            El punto verde interactivo se ubica en \((x_0, f(x_0))\) con sus líneas proyectivas directas a cada eje coordenado.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==================== MÓDULO 4: FORMAS DE EXPRESIÓN MULTIMODAL ==================== -->
+            <section id="module-4" class="module-content hidden space-y-6">
+                <!-- Header Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h2 class="text-xl font-bold text-gray-800 mb-1">Formas de Expresión de una Función</h2>
+                    <p class="text-xs text-gray-500">
+                        Una función matemática puede expresarse simultáneamente de cuatro formas equivalentes y complementarias. Seleccione un caso de estudio biológico/médico para explorar su correspondencia multimodal:
+                    </p>
+                </div>
+
+                <!-- Selector de Caso Biomédico -->
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="selectMod4Case(0)" id="case-btn-0" class="px-4 py-2 rounded-xl text-xs font-semibold bg-accent text-white transition shadow-sm">
+                        Caso A: Crecimiento Bacteriano (Exponencial)
+                    </button>
+                    <button onclick="selectMod4Case(1)" id="case-btn-1" class="px-4 py-2 rounded-xl text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
+                        Caso B: Eliminación de Fármaco (Lineal)
+                    </button>
+                    <button onclick="selectMod4Case(2)" id="case-btn-2" class="px-4 py-2 rounded-xl text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
+                        Caso C: Cinética Enzimática Térmica (Parabólica)
+                    </button>
+                </div>
+
+                <!-- Grid 2x2 Multimodal -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- 1. Forma Verbal -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="bg-blue-100 text-blue-800 text-[11px] px-2.5 py-1 rounded-md font-bold uppercase">1. Forma Verbal / Contextual</span>
+                            </div>
+                            <p id="mod4-verbal" class="text-xs text-gray-700 leading-relaxed italic mt-2 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                                "La población de bacterias en un cultivo se duplica cada hora a partir de una población inicial de 100 microorganismos en función del tiempo en horas."
+                            </p>
+                        </div>
+                        <div class="text-[11px] text-gray-500 mt-4 border-t border-gray-100 pt-2">
+                            Describe la interdependencia entre variables utilizando lenguaje natural y condiciones fisiológicas o del entorno.
+                        </div>
+                    </div>
+
+                    <!-- 2. Forma Analítica -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="bg-emerald-100 text-emerald-800 text-[11px] px-2.5 py-1 rounded-md font-bold uppercase">2. Forma Analítica / Algebraica</span>
+                            </div>
+                            <div id="mod4-analytic" class="text-base font-bold text-gray-900 bg-gray-50 p-3 rounded-xl border border-gray-100 mt-2 text-center code-font">
+                                $$f(x) = 100 \cdot 2^x$$
+                            </div>
+                        </div>
+                        <div class="text-[11px] text-gray-500 mt-4 border-t border-gray-100 pt-2">
+                            Ecuación o ley matemática formal que opera como algoritmo unívoco para obtener la ordenada a partir de la abscisa.
+                        </div>
+                    </div>
+
+                    <!-- 3. Forma Tabular -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="bg-purple-100 text-purple-800 text-[11px] px-2.5 py-1 rounded-md font-bold uppercase">3. Forma Tabular (Tabla de Valores)</span>
+                            </div>
+                            <div class="overflow-x-auto mt-2 border border-gray-100 rounded-xl">
+                                <table class="w-full text-xs text-left text-gray-700 border-collapse">
+                                    <thead class="bg-gray-50 text-gray-800 font-bold border-b border-gray-200">
+                                        <tr>
+                                            <th class="p-2 border-r border-gray-200 text-center">Abscisa (\(x\))</th>
+                                            <th class="p-2 text-center">Ordenada (\(y = f(x)\))</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="mod4-table-body">
+                                        <tr class="border-b border-gray-100"><td class="p-2 text-center border-r border-gray-100 code-font">0</td><td class="p-2 text-center code-font">100</td></tr>
+                                        <tr class="border-b border-gray-100"><td class="p-2 text-center border-r border-gray-100 code-font">1</td><td class="p-2 text-center code-font">200</td></tr>
+                                        <tr class="border-b border-gray-100"><td class="p-2 text-center border-r border-gray-100 code-font">2</td><td class="p-2 text-center code-font">400</td></tr>
+                                        <tr><td class="p-2 text-center border-r border-gray-100 code-font">3</td><td class="p-2 text-center code-font">800</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="text-[11px] text-gray-500 mt-4 border-t border-gray-100 pt-2">
+                            Colección discreta de pares ordenados evaluados empíricamente o derivados de la ley funcional.
+                        </div>
+                    </div>
+
+                    <!-- 4. Forma Gráfica -->
+                    <div class="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="bg-amber-100 text-amber-800 text-[11px] px-2.5 py-1 rounded-md font-bold uppercase">4. Forma Gráfica (Plano Cartesiano)</span>
+                            </div>
+                            <div class="relative bg-slate-900 rounded-xl overflow-hidden h-[160px] shadow-inner mt-2 flex items-center justify-center">
+                                <canvas id="canvas-mod4" width="320" height="160" class="w-full h-full"></canvas>
+                            </div>
+                        </div>
+                        <div class="text-[11px] text-gray-500 mt-4 border-t border-gray-100 pt-2 text-center">
+                            Curva continua trazada en el sistema ortogonal que sintetiza la totalidad del comportamiento funcional.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer Institucional -->
+    <footer class="bg-white border-t border-gray-200 py-4 mt-8 text-center text-xs text-gray-500">
+        Desarrollado por vesalio - Todos los derechos reservados
+    </footer>
+
+    <!-- MODAL: GUÍA DE USO -->
+    <div id="tutorial-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto custom-scroll">
+            <div class="flex items-center justify-between border-b pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-accent"></span>
+                    <h3 class="text-base font-bold text-gray-800 uppercase tracking-wide">Guía de Uso del Simulador</h3>
+                </div>
+                <button onclick="closeTutorial()" class="text-gray-400 hover:text-gray-600 text-xl font-bold">&times;</button>
+            </div>
+            
+            <div class="space-y-4 text-xs text-gray-600 leading-relaxed">
+                <div class="bg-gray-50 p-3.5 rounded-xl border border-gray-100">
+                    <span class="font-bold text-gray-800 text-xs block mb-1">Propósito Pedagógico (Curso de Ingreso a Medicina - UCCuyo):</span>
+                    Este simulador interactivo proporciona las bases matemáticas del precálculo indispensables para las ciencias biomédicas: relaciones y no conmutatividad del par ordenado, definición de función con los criterios de existencia y unicidad (prueba de la línea vertical), restricciones analíticas del dominio e imagen en \(\mathbb{R}\), y articulación de las cuatro formas de expresión (verbal, analítica, tabular y gráfica) aplicadas a modelos de la salud (farmacocinética, microbiología y enzimología).
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-1 text-accent">1. Módulo 1: Pares Ordenados y Producto Cartesiano</h4>
+                    <ul class="list-disc list-inside space-y-1 ml-1 text-gray-600">
+                        <li><strong>Propiedad de No Conmutatividad:</strong> Ajuste los valores enteros de las componentes \(a\) y \(b\) (rango \([-5, 5]\)) mediante los deslizadores. Verifique que el par original \((a,b)\) y el par invertido \((b,a)\) son geométricamente y analíticamente distintos en el plano ortogonal, coincidiendo únicamente cuando \(a = b\).</li>
+                        <li><strong>Producto Cartesiano \(A \times B\):</strong> Visualice en el Canvas 2D los puntos discretos generados por el producto entre \(A = \{-2, -1, 1, 2\}\) y \(B = \{-2, 0, 2\}\). Cada punto gris representa un par ordenado \((x, y) \in A \times B\), contrastado contra los pares dinámicos \((a,b)\) en celeste y \((b,a)\) en verde esmeralda.</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-1 text-accent">2. Módulo 2: Concepto de Función y Criterios de Existencia y Unicidad</h4>
+                    <ul class="list-disc list-inside space-y-1 ml-1 text-gray-600">
+                        <li><strong>Prueba de la Línea Vertical:</strong> Seleccione entre una función cuadrática válida (\(f(x) = 0.3x^2 - 2\)) y una relación no funcional (circunferencia de radio 3: \(x^2 + y^2 = 9\)). Mueva la recta vertical interactiva a lo largo del eje de abscisas mediante el deslizador continuo.</li>
+                        <li><strong>Diagnóstico Dinámico:</strong> El indicador de estado detecta automáticamente si el número de intersecciones es \(1\) (cumple existencia y unicidad, es función), \(2\) (viola unicidad, no es función) o \(0\) (abscisa fuera del dominio de la relación).</li>
+                        <li><strong>Nomenclatura Aplicada a la Medicina:</strong> Diferenciación estricta entre la variable independiente \(x\) (eje horizontal de abscisas: tiempo transcurrido en horas, dosis administrada en mg/kg) y la variable dependiente \(y = f(x)\) (eje vertical de ordenadas: concentración plasmática, presión arterial sistólica).</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-1 text-accent">3. Módulo 3: Dominio, Imagen y Evaluación Funcional</h4>
+                    <ul class="list-disc list-inside space-y-1 ml-1 text-gray-600">
+                        <li><strong>Cuatro Familias Funcionales y Restricciones Analíticas:</strong>
+                            <ol class="list-decimal list-inside ml-2 space-y-0.5 mt-1">
+                                <li><strong>Polinómica</strong> (\(f(x) = x^2 - 4\)): sin restricciones, \(\text{Dom}(f) = \mathbb{R}\), \(\text{Im}(f) = [-4, +\infty)\).</li>
+                                <li><strong>Racional</strong> (\(f(x) = \frac{1}{x - 2}\)): denominador no nulo (\(x \neq 2\)), \(\text{Dom}(f) = \mathbb{R} \setminus \{2\}\), \(\text{Im}(f) = \mathbb{R} \setminus \{0\}\).</li>
+                                <li><strong>Irracional</strong> (\(f(x) = \sqrt{x - 1}\)): radicando de índice par no negativo (\(x \ge 1\)), \(\text{Dom}(f) = [1, +\infty)\), \(\text{Im}(f) = [0, +\infty)\).</li>
+                                <li><strong>Logarítmica</strong> (\(f(x) = \ln(x + 2)\)): argumento estrictamente positivo (\(x > -2\)), \(\text{Dom}(f) = (-2, +\infty)\), \(\text{Im}(f) = \mathbb{R}\).</li>
+                            </ol>
+                        </li>
+                        <li><strong>Laboratorio de Evaluación de \(x_0\):</strong> Mueva el deslizador de abscisas para calcular instantáneamente \(f(x_0)\). Si \(x_0\) se encuentra fuera del dominio analítico, el simulador alerta inmediatamente <em>"No Definido (Fuera de Dominio)"</em>.</li>
+                        <li><strong>Proyecciones en Canvas 2D:</strong> La posición del punto \((x_0, f(x_0))\) se dibuja en tiempo real con líneas punteadas que conectan ortogonalmente con ambos ejes, permitiendo visualizar la pertenencia al dominio en el eje \(x\) y a la imagen en el eje \(y\).</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-gray-800 text-sm mb-1 text-accent">4. Módulo 4: Formas de Expresión Multimodal</h4>
+                    <ul class="list-disc list-inside space-y-1 ml-1 text-gray-600">
+                        <li><strong>Articulación Simultánea 2x2:</strong> Permite analizar la misma ley de dependencia funcional expresada en sus cuatro modos complementarios:
+                            <ol class="list-decimal list-inside ml-2 space-y-0.5 mt-1">
+                                <li><strong>Forma Verbal / Contextual:</strong> Enunciado en lenguaje natural con significado biológico o clínico.</li>
+                                <li><strong>Forma Analítica / Algebraica:</strong> Fórmula matemática explícita \(y = f(x)\) renderizada con KaTeX.</li>
+                                <li><strong>Forma Tabular:</strong> Tabla con valores discretos evaluados en puntos clave del dominio.</li>
+                                <li><strong>Forma Gráfica:</strong> Trazo continuo de la curva en el plano cartesiano del Canvas 2D.</li>
+                            </ol>
+                        </li>
+                        <li><strong>Tres Modelos Biomédicos:</strong>
+                            <ol class="list-decimal list-inside ml-2 space-y-0.5 mt-1">
+                                <li><strong>Caso A:</strong> Crecimiento Bacteriano exponencial (\(f(x) = 100 \cdot 2^x\)).</li>
+                                <li><strong>Caso B:</strong> Eliminación de Fármaco de cinética lineal de orden cero (\(f(x) = 120 - 15x\)).</li>
+                                <li><strong>Caso C:</strong> Cinética Enzimática parabólica con temperatura corporal óptima (\(f(x) = -(x - 37)^2 + 100\)).</li>
+                            </ol>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-3 border-t flex justify-end">
+                <button onclick="closeTutorial()" class="px-5 py-2 bg-accent text-white text-xs font-semibold rounded-xl hover:bg-accent-hover transition shadow-sm">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script del Simulador -->
+    <script>
+        // Modal Guía de Uso
+        function openTutorial() {
+            document.getElementById('tutorial-modal').classList.remove('hidden');
+        }
+        function closeTutorial() {
+            document.getElementById('tutorial-modal').classList.add('hidden');
+        }
+
+        // Navegación entre pestañas
+        function switchTab(tabIndex) {
+            for (let i = 1; i <= 4; i++) {
+                const btn = document.getElementById(`btn-tab-${i}`);
+                const mod = document.getElementById(`module-${i}`);
+                if (i === tabIndex) {
+                    btn.className = "bg-accent text-white flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-semibold transition";
+                    mod.classList.remove('hidden');
+                    mod.classList.add('block');
+                } else {
+                    btn.className = "text-gray-700 hover:bg-gray-100 flex-1 lg:flex-none text-left py-2.5 px-4 rounded-xl text-sm font-medium transition";
+                    mod.classList.remove('block');
+                    mod.classList.add('hidden');
+                }
+            }
+
+            setTimeout(() => {
+                resizeCanvases();
+                if (tabIndex === 1) updateMod1();
+                if (tabIndex === 2) updateMod2();
+                if (tabIndex === 3) updateMod3Model();
+                if (tabIndex === 4) drawMod4(currentMod4Case);
+                renderKaTeX();
+            }, 50);
+        }
+
+        function renderKaTeX() {
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: '$$', right: '$$', display: true},
+                        {left: '\\[', right: '\\]', display: true},
+                        {left: '\\(', right: '\\)', display: false},
+                        {left: '$', right: '$', display: false}
+                    ],
+                    throwOnError: false
+                });
+            }
+        }
+
+        // ==================== MÓDULO 1: LÓGICA & CANVAS ====================
+        function updateMod1() {
+            const a = parseInt(document.getElementById('slider-a').value);
+            const b = parseInt(document.getElementById('slider-b').value);
+
+            document.getElementById('val-a').innerText = a;
+            document.getElementById('val-b').innerText = b;
+            document.getElementById('txt-a').innerText = a;
+            document.getElementById('txt-b').innerText = b;
+            document.getElementById('txt-b-inv').innerText = b;
+            document.getElementById('txt-a-inv').innerText = a;
+
+            const statusEl = document.getElementById('conmutativo-status');
+            if (a === b) {
+                statusEl.innerHTML = `\\((${a}, ${b}) = (${b}, ${a})\\) (Coinciden pues \\(a = b\\))`;
+                statusEl.className = "text-xs font-bold text-emerald-700 pt-1";
+            } else {
+                statusEl.innerHTML = `\\((${a}, ${b}) \\neq (${b}, ${a})\\) (No conmutativo)`;
+                statusEl.className = "text-xs font-bold text-amber-600 pt-1";
+            }
+            renderKaTeX();
+            drawMod1();
+        }
+
+        function drawMod1() {
+            const canvas = document.getElementById('canvas-mod1');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            const a = parseInt(document.getElementById('slider-a').value);
+            const b = parseInt(document.getElementById('slider-b').value);
+
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, w, h);
+
+            const cx = w / 2;
+            const cy = h / 2;
+            const scale = 22;
+
+            // Cuadrícula
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            for(let x = -8; x <= 8; x++) {
+                ctx.beginPath();
+                ctx.moveTo(cx + x * scale, 0);
+                ctx.lineTo(cx + x * scale, h);
+                ctx.stroke();
+            }
+            for(let y = -6; y <= 6; y++) {
+                ctx.beginPath();
+                ctx.moveTo(0, cy + y * scale);
+                ctx.lineTo(w, cy + y * scale);
+                ctx.stroke();
+            }
+
+            // Ejes
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(0, cy); ctx.lineTo(w, cy);
+            ctx.moveTo(cx, 0); ctx.lineTo(cx, h);
+            ctx.stroke();
+
+            // Graduación y etiquetas de los ejes (Ticks y Números)
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '10px monospace';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            for (let x = -8; x <= 8; x++) {
+                if (x === 0) continue;
+                let sx = cx + x * scale;
+                ctx.beginPath();
+                ctx.strokeStyle = '#94a3b8';
+                ctx.lineWidth = 1;
+                ctx.moveTo(sx, cy - 3);
+                ctx.lineTo(sx, cy + 3);
+                ctx.stroke();
+                ctx.fillText(x.toString(), sx, cy + 5);
+            }
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            for (let y = -6; y <= 6; y++) {
+                if (y === 0) continue;
+                let sy = cy - y * scale;
+                ctx.beginPath();
+                ctx.strokeStyle = '#94a3b8';
+                ctx.lineWidth = 1;
+                ctx.moveTo(cx - 3, sy);
+                ctx.lineTo(cx + 3, sy);
+                ctx.stroke();
+                ctx.fillText(y.toString(), cx - 5, sy);
+            }
+            ctx.fillText('0', cx - 5, cy + 10);
+
+            // Puntos discretos A x B
+            const setA = [-2, -1, 1, 2];
+            const setB = [-2, 0, 2];
+            ctx.fillStyle = '#475569';
+            setA.forEach(ax => {
+                setB.forEach(by => {
+                    ctx.beginPath();
+                    ctx.arc(cx + ax * scale, cy - by * scale, 3.5, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            });
+
+            // Punto original (a, b)
+            ctx.fillStyle = '#38bdf8';
+            ctx.beginPath();
+            ctx.arc(cx + a * scale, cy - b * scale, 6.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Etiqueta (a, b)
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = 'bold 11px Outfit, sans-serif';
+            ctx.fillText(`(a,b) = (${a}, ${b})`, cx + a * scale + 9, cy - b * scale - 6);
+
+            // Punto invertido (b, a)
+            if (a !== b) {
+                ctx.fillStyle = '#10b981';
+                ctx.beginPath();
+                ctx.arc(cx + b * scale, cy - a * scale, 6.5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.fillStyle = '#34d399';
+                ctx.fillText(`(b,a) = (${b}, ${a})`, cx + b * scale + 9, cy - a * scale - 6);
+            }
+        }
+
+        // ==================== MÓDULO 2: LÓGICA & CANVAS ====================
+        let vlineX = 1.0;
+        let curveType = 'function';
+
+        function changeCurveType() {
+            curveType = document.getElementById('select-curve-type').value;
+            updateMod2();
+        }
+
+        function updateMod2FromSlider() {
+            vlineX = parseFloat(document.getElementById('slider-vline').value);
+            document.getElementById('val-vline').innerText = vlineX.toFixed(1);
+            updateMod2();
+        }
+
+        function updateMod2() {
+            const canvas = document.getElementById('canvas-mod2');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            const cx = w / 2;
+            const cy = h / 2;
+            const scale = 35;
+
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, w, h);
+
+            // Cuadrícula
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            for(let x = -6; x <= 6; x++) {
+                ctx.beginPath(); ctx.moveTo(cx + x * scale, 0); ctx.lineTo(cx + x * scale, h); ctx.stroke();
+            }
+            for(let y = -4; y <= 4; y++) {
+                ctx.beginPath(); ctx.moveTo(0, cy + y * scale); ctx.lineTo(w, cy + y * scale); ctx.stroke();
+            }
+
+            // Ejes
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(0, cy); ctx.lineTo(w, cy);
+            ctx.moveTo(cx, 0); ctx.lineTo(cx, h);
+            ctx.stroke();
+
+            // Graduación y etiquetas de los ejes (Ticks y Números)
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '10px monospace';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            for (let x = -6; x <= 6; x++) {
+                if (x === 0) continue;
+                let sx = cx + x * scale;
+                ctx.beginPath();
+                ctx.strokeStyle = '#94a3b8';
+                ctx.lineWidth = 1;
+                ctx.moveTo(sx, cy - 3);
+                ctx.lineTo(sx, cy + 3);
+                ctx.stroke();
+                ctx.fillText(x.toString(), sx, cy + 5);
+            }
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            for (let y = -4; y <= 4; y++) {
+                if (y === 0) continue;
+                let sy = cy - y * scale;
+                ctx.beginPath();
+                ctx.strokeStyle = '#94a3b8';
+                ctx.lineWidth = 1;
+                ctx.moveTo(cx - 3, sy);
+                ctx.lineTo(cx + 3, sy);
+                ctx.stroke();
+                ctx.fillText(y.toString(), cx - 5, sy);
+            }
+            ctx.fillText('0', cx - 5, cy + 10);
+
+            // Dibujar Curva
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            if (curveType === 'function') {
+                for (let px = 0; px <= w; px++) {
+                    let x = (px - cx) / scale;
+                    let y = 0.3 * x * x - 2;
+                    let py = cy - y * scale;
+                    if (px === 0) ctx.moveTo(px, py);
+                    else ctx.lineTo(px, py);
+                }
+            } else {
+                ctx.arc(cx, cy, 3 * scale, 0, Math.PI * 2);
+            }
+            ctx.stroke();
+
+            // Línea Vertical de Prueba
+            let vPixelX = cx + vlineX * scale;
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(vPixelX, 0);
+            ctx.lineTo(vPixelX, h);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Intersecciones y estado
+            const statusEl = document.getElementById('vline-status');
+            if (curveType === 'function') {
+                let yVal = 0.3 * vlineX * vlineX - 2;
+                let pyVal = cy - yVal * scale;
+                ctx.fillStyle = '#10b981';
+                ctx.beginPath(); ctx.arc(vPixelX, pyVal, 6, 0, Math.PI * 2); ctx.fill();
+                ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5; ctx.stroke();
+
+                statusEl.innerHTML = `Prueba Vertical en \\(x = ${vlineX.toFixed(1)}\\): Cortes con la curva = 1 (¡Cumple Existencia y Unicidad!)`;
+                statusEl.className = "mt-4 text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-200 text-center";
+            } else {
+                if (Math.abs(vlineX) < 3) {
+                    let yHalf = Math.sqrt(9 - vlineX * vlineX);
+                    let py1 = cy - yHalf * scale;
+                    let py2 = cy + (-yHalf) * scale;
+
+                    ctx.fillStyle = '#ef4444';
+                    ctx.beginPath(); ctx.arc(vPixelX, py1, 6, 0, Math.PI * 2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(vPixelX, py2, 6, 0, Math.PI * 2); ctx.fill();
+                    ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 1.5; ctx.stroke();
+
+                    statusEl.innerHTML = `Prueba Vertical en \\(x = ${vlineX.toFixed(1)}\\): ¡Corta en 2 puntos! (No es función por violar unicidad)`;
+                    statusEl.className = "mt-4 text-xs font-bold text-rose-700 bg-rose-50 px-3 py-2 rounded-xl border border-rose-200 text-center";
+                } else {
+                    statusEl.innerHTML = `Prueba Vertical en \\(x = ${vlineX.toFixed(1)}\\): Cortes con la curva = 0 (Punto exterior al dominio)`;
+                    statusEl.className = "mt-4 text-xs font-bold text-amber-700 bg-amber-50 px-3 py-2 rounded-xl border border-amber-200 text-center";
+                }
+            }
+            renderKaTeX();
+        }
+
+        // ==================== MÓDULO 3: LÓGICA & CANVAS ====================
+        function updateMod3Model() {
+            const model = document.getElementById('select-func-mod3').value;
+            const analyticText = document.getElementById('mod3-analytic-text');
+            const badgeDom = document.getElementById('badge-dom');
+            const badgeImg = document.getElementById('badge-img');
+
+            if (model === 'poly') {
+                analyticText.innerHTML = "Función Polinómica \\(f(x) = x^2 - 4\\). Sin restricciones algebraicas. \n\\(\\text{Dom}(f) = \\mathbb{R} = (-\\infty, +\\infty)\\).";
+                badgeDom.innerHTML = "\\((-\\infty, +\\infty)\\)";
+                badgeImg.innerHTML = "\\([-4, +\\infty)\\)";
+            } else if (model === 'rational') {
+                analyticText.innerHTML = "Función Racional \\(f(x) = \\frac{1}{x - 2}\\). El denominador no puede anularse: \\(x - 2 \\neq 0 \\implies x \\neq 2\\).\n\\(\\text{Dom}(f) = \\mathbb{R} \\setminus \\{2\\} = (-\\infty, 2) \\cup (2, +\\infty)\\).";
+                badgeDom.innerHTML = "\\(\\mathbb{R} \\setminus \\{2\\}\\)";
+                badgeImg.innerHTML = "\\(\\mathbb{R} \\setminus \\{0\\}\\)";
+            } else if (model === 'radical') {
+                analyticText.innerHTML = "Función Irracional \\(f(x) = \\sqrt{x - 1}\\). El radicando debe ser \\(\\ge 0\\): \\(x - 1 \\ge 0 \\implies x \\ge 1\\).\n\\(\\text{Dom}(f) = [1, +\\infty)\\).";
+                badgeDom.innerHTML = "\\([1, +\\infty)\\)";
+                badgeImg.innerHTML = "\\([0, +\\infty)\\)";
+            } else if (model === 'log') {
+                analyticText.innerHTML = "Función Logarítmica \\(f(x) = \\ln(x + 2)\\). El argumento debe ser estrictamente positivo: \\(x + 2 > 0 \\implies x > -2\\).\n\\(\\text{Dom}(f) = (-2, +\\infty)\\).";
+                badgeDom.innerHTML = "\\((-2, +\\infty)\\)";
+                badgeImg.innerHTML = "\\((-\\infty, +\\infty)\\)";
+            }
+            renderKaTeX();
+            updateMod3Eval();
+        }
+
+        function updateMod3Eval() {
+            const x0 = parseFloat(document.getElementById('slider-x0').value);
+            document.getElementById('val-x0-num').innerText = x0.toFixed(1);
+            const model = document.getElementById('select-func-mod3').value;
+
+            let fx0 = 0;
+            let isValid = true;
+
+            if (model === 'poly') {
+                fx0 = x0 * x0 - 4;
+            } else if (model === 'rational') {
+                if (Math.abs(x0 - 2) < 0.05) isValid = false;
+                else fx0 = 1 / (x0 - 2);
+            } else if (model === 'radical') {
+                if (x0 < 1) isValid = false;
+                else fx0 = Math.sqrt(x0 - 1);
+            } else if (model === 'log') {
+                if (x0 <= -2) isValid = false;
+                else fx0 = Math.log(x0 + 2);
+            }
+
+            const resEl = document.getElementById('val-fx0-result');
+            if (!isValid) {
+                resEl.innerText = "No Definido (Fuera de Dominio)";
+            } else {
+                resEl.innerText = fx0.toFixed(3);
+            }
+
+            drawMod3();
+        }
+
+        function drawMod3() {
+            const canvas = document.getElementById('canvas-mod3');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            const cx = w / 2;
+            const cy = h / 2;
+            const scale = 36;
+            const model = document.getElementById('select-func-mod3').value;
+            const x0 = parseFloat(document.getElementById('slider-x0').value);
+
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, w, h);
+
+            // Cuadrícula
+            ctx.strokeStyle = '#1e293b';
+            ctx.lineWidth = 1;
+            for(let x = -8; x <= 8; x++) {
+                ctx.beginPath(); ctx.moveTo(cx + x * scale, 0); ctx.lineTo(cx + x * scale, h); ctx.stroke();
+            }
+            for(let y = -5; y <= 5; y++) {
+                ctx.beginPath(); ctx.moveTo(0, cy + y * scale); ctx.lineTo(w, cy + y * scale); ctx.stroke();
+            }
+
+            // Ejes
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(0, cy); ctx.lineTo(w, cy);
+            ctx.moveTo(cx, 0); ctx.lineTo(cx, h);
+            ctx.stroke();
+
+            // Graduación y etiquetas de los ejes (Ticks y Números)
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '10px monospace';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            for (let x = -8; x <= 8; x++) {
+                if (x === 0) continue;
+                let sx = cx + x * scale;
+                ctx.beginPath();
+                ctx.strokeStyle = '#94a3b8';
+                ctx.lineWidth = 1;
+                ctx.moveTo(sx, cy - 3);
+                ctx.lineTo(sx, cy + 3);
+                ctx.stroke();
+                ctx.fillText(x.toString(), sx, cy + 5);
+            }
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            for (let y = -5; y <= 5; y++) {
+                if (y === 0) continue;
+                let sy = cy - y * scale;
+                ctx.beginPath();
+                ctx.strokeStyle = '#94a3b8';
+                ctx.lineWidth = 1;
+                ctx.moveTo(cx - 3, sy);
+                ctx.lineTo(cx + 3, sy);
+                ctx.stroke();
+                ctx.fillText(y.toString(), cx - 5, sy);
+            }
+            ctx.fillText('0', cx - 5, cy + 10);
+
+            // Dibujar curva funcional
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            let first = true;
+            for (let px = 0; px <= w; px++) {
+                let x = (px - cx) / scale;
+                let y = null;
+                if (model === 'poly') y = x * x - 4;
+                else if (model === 'rational') {
+                    if (Math.abs(x - 2) < 0.08) { first = true; continue; }
+                    y = 1 / (x - 2);
+                } else if (model === 'radical') {
+                    if (x >= 1) y = Math.sqrt(x - 1);
+                } else if (model === 'log') {
+                    if (x > -2) y = Math.log(x + 2);
+                }
+
+                if (y !== null && !isNaN(y) && Math.abs(y) < 10) {
+                    let py = cy - y * scale;
+                    if (first) { ctx.moveTo(px, py); first = false; }
+                    else ctx.lineTo(px, py);
+                } else {
+                    first = true;
+                }
+            }
+            ctx.stroke();
+
+            // Evaluar punto x0, f(x0)
+            let validEval = true;
+            let yEval = 0;
+            if (model === 'poly') yEval = x0 * x0 - 4;
+            else if (model === 'rational') { if(Math.abs(x0 - 2) < 0.08) validEval = false; else yEval = 1/(x0 - 2); }
+            else if (model === 'radical') { if(x0 < 1) validEval = false; else yEval = Math.sqrt(x0 - 1); }
+            else if (model === 'log') { if(x0 <= -2) validEval = false; else yEval = Math.log(x0 + 2); }
+
+            if (validEval) {
+                let pxx0 = cx + x0 * scale;
+                let pyx0 = cy - yEval * scale;
+
+                // Proyecciones ortogonales punteadas
+                ctx.strokeStyle = '#10b981';
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath();
+                ctx.moveTo(pxx0, cy); ctx.lineTo(pxx0, pyx0); ctx.lineTo(cx, pyx0);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Punto
+                ctx.fillStyle = '#10b981';
+                ctx.beginPath(); ctx.arc(pxx0, pyx0, 6, 0, Math.PI * 2); ctx.fill();
+                ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 2; ctx.stroke();
+            }
+        }
+
+        // ==================== MÓDULO 4: LÓGICA & CANVAS ====================
+        let currentMod4Case = 0;
+        const mod4Data = [
+            {
+                verbal: '"La población bacteriana en un cultivo experimental comienza con 100 microorganismos y se duplica cada hora transcurrida."',
+                analytic: "f(x) = 100 \\cdot 2^x",
+                table: [[0, 100], [1, 200], [2, 400], [3, 800]],
+                type: 'exp'
+            },
+            {
+                verbal: '"La concentración plasmática de un medicamento analgésico desciende linealmente a razón de 15 mg/L por cada hora post-administración."',
+                analytic: "f(x) = 120 - 15x",
+                table: [[0, 120], [2, 90], [4, 60], [6, 30]],
+                type: 'linear'
+            },
+            {
+                verbal: '"La velocidad de reacción enzimática en función de la temperatura corporal experimenta un óptimo parabólico modelado por actividad biológica."',
+                analytic: "f(x) = - (x - 37)^2 + 100",
+                table: [[35, 96], [36, 99], [37, 100], [38, 99]],
+                type: 'quad'
+            }
+        ];
+
+        function selectMod4Case(idx) {
+            currentMod4Case = idx;
+            for(let i = 0; i < 3; i++) {
+                const btn = document.getElementById(`case-btn-${i}`);
+                if(i === idx) {
+                    btn.className = "px-4 py-2 rounded-xl text-xs font-semibold bg-accent text-white transition shadow-sm";
+                } else {
+                    btn.className = "px-4 py-2 rounded-xl text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200 transition";
+                }
+            }
+
+            const data = mod4Data[idx];
+            document.getElementById('mod4-verbal').innerText = data.verbal;
+            document.getElementById('mod4-analytic').innerHTML = `$$${data.analytic}$$`;
+
+            let tbody = document.getElementById('mod4-table-body');
+            tbody.innerHTML = '';
+            data.table.forEach(row => {
+                tbody.innerHTML += `<tr class="border-b border-gray-100"><td class="p-2 text-center border-r border-gray-100 code-font">${row[0]}</td><td class="p-2 text-center code-font">${row[1]}</td></tr>`;
+            });
+
+            renderKaTeX();
+            drawMod4(idx);
+        }
+
+        function drawMod4(idx) {
+            const canvas = document.getElementById('canvas-mod4');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(0, 0, w, h);
+
+            // Ejes cartesianos y cuadrícula sutil
+            const ox = 42;
+            const oy = h - 24;
+            const rightX = w - 18;
+            const topY = 16;
+
+            ctx.strokeStyle = '#64748b';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(ox, oy); ctx.lineTo(rightX, oy); // Eje X
+            ctx.moveTo(ox, topY); ctx.lineTo(ox, oy);   // Eje Y
+            ctx.stroke();
+
+            // Configuración de escalas según el caso (idx 0: exp, 1: lineal, 2: cuadrática)
+            let xTicks = [];
+            let yTicks = [];
+            let xToPx = (x) => ox;
+            let yToPx = (y) => oy;
+            let fnPlot = (x) => 0;
+            let xStart = 0, xEnd = 3;
+
+            if (idx === 0) {
+                // Bacterias: x de 0 a 3 (horas), y de 0 a 800 (microorg)
+                xTicks = [0, 1, 2, 3];
+                yTicks = [0, 200, 400, 600, 800];
+                xStart = 0; xEnd = 3;
+                xToPx = (x) => ox + ((x - 0) / 3) * (rightX - ox);
+                yToPx = (y) => oy - ((y - 0) / 850) * (oy - topY);
+                fnPlot = (x) => 100 * Math.pow(2, x);
+            } else if (idx === 1) {
+                // Fármaco: x de 0 a 6 (horas), y de 0 a 120 (mg/L)
+                xTicks = [0, 2, 4, 6];
+                yTicks = [0, 30, 60, 90, 120];
+                xStart = 0; xEnd = 6;
+                xToPx = (x) => ox + ((x - 0) / 6) * (rightX - ox);
+                yToPx = (y) => oy - ((y - 0) / 130) * (oy - topY);
+                fnPlot = (x) => 120 - 15 * x;
+            } else {
+                // Enzima: x de 34 a 40 (°C), y de 90 a 100 (actividad %)
+                xTicks = [35, 36, 37, 38, 39];
+                yTicks = [90, 93, 96, 99, 100];
+                xStart = 34.5; xEnd = 39.5;
+                xToPx = (x) => ox + ((x - 34.5) / 5.0) * (rightX - ox);
+                yToPx = (y) => oy - ((y - 90) / 11) * (oy - topY);
+                fnPlot = (x) => -Math.pow(x - 37, 2) + 100;
+            }
+
+            // Marcas y números en Eje X
+            ctx.fillStyle = '#94a3b8';
+            ctx.font = '10px monospace';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            xTicks.forEach(tx => {
+                let px = xToPx(tx);
+                ctx.beginPath();
+                ctx.strokeStyle = '#64748b';
+                ctx.lineWidth = 1;
+                ctx.moveTo(px, oy - 3);
+                ctx.lineTo(px, oy + 3);
+                ctx.stroke();
+                ctx.fillText(tx.toString(), px, oy + 5);
+            });
+
+            // Marcas y números en Eje Y
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            yTicks.forEach(ty => {
+                let py = yToPx(ty);
+                ctx.beginPath();
+                ctx.strokeStyle = '#64748b';
+                ctx.lineWidth = 1;
+                ctx.moveTo(ox - 3, py);
+                ctx.lineTo(ox + 3, py);
+                ctx.stroke();
+                ctx.fillText(ty.toString(), ox - 5, py);
+            });
+
+            // Trazado de Curva
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            let steps = 60;
+            for (let s = 0; s <= steps; s++) {
+                let xVal = xStart + (s / steps) * (xEnd - xStart);
+                let yVal = fnPlot(xVal);
+                let px = xToPx(xVal);
+                let py = yToPx(yVal);
+                if (s === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.stroke();
+        }
+
+        function resizeCanvases() {
+            document.querySelectorAll('canvas').forEach(canvas => {
+                const rect = canvas.getBoundingClientRect();
+                if (rect.width > 0 && rect.height > 0) {
+                    canvas.width = rect.width;
+                    canvas.height = rect.height;
+                }
+            });
+        }
+
+        window.addEventListener('resize', () => {
+            resizeCanvases();
+            updateMod1();
+            updateMod2();
+            updateMod3Eval();
+            drawMod4(currentMod4Case);
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            resizeCanvases();
+            switchTab(1);
+            renderKaTeX();
+        });
+    </script>
+</body>
+</html>
